@@ -62,6 +62,7 @@ var h = 200;
 
 var minL = 380.0;
 var maxL = 780.0;
+var brightness = 1.0;
 
 function draw()
 {
@@ -82,7 +83,7 @@ function draw()
     
     x0 = (s.wavelength - minL) / (maxL - minL) * w;
     
-    width = Math.log(s.intensity) * $("#exp").val();
+    width = Math.log(s.intensity) * brightness;
     
     if(width >= 2)
     {
@@ -118,25 +119,41 @@ $("#spectrum").mousemove(function(e){
 });
 
 $("#exp").change(function(){
-  minL = $("#minL").val();
-  maxL = $("#maxL").val();
   draw();
 });
 
 $("#minL").change(function(){
-  minL = $("#minL").val();
-  maxL = $("#maxL").val();
   draw();
 });
 
 $("#maxL").change(function(){
-  minL = $("#minL").val();
-  maxL = $("#maxL").val();
   draw();
 });
 
 
 $(function(){
+  $("#range").slider({
+    range: true,
+    min: 380,
+    max: 780,
+    values: [380, 780],
+    slide: function(event, ui) {
+      minL = ui.values[0];
+      maxL = ui.values[1];
+      draw();
+    }
+  });
+  
+  $("#exp").slider({
+    min: 0,
+    max: 1000,
+    values: [500],
+    slide: function(event, ui) {
+      brightness = ui.values[0] / 500.0;
+      draw();
+    }
+  });
+  
   draw();
 });
 

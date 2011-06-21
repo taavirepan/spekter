@@ -62,10 +62,9 @@ get '/view' do
   @main = "<canvas id='spectrum' width='800' height='200'>" 
   @main += "Your browser doesn't support <b>canvas</b> element."
   @main += "</canvas><br>"
-  @main += "<input id='minL' value='380' size='4'>..<input value='780' id='maxL' size='4'> nm<br>";
-  @main += "Brightness: <input id='exp' value='1.0' size='4'><br>";
-  @main += "<input value='Draw' width='160' type='button'><br>";
-  @main += "<div id='info'></div>"
+  @main += "Range: <div id='range'></div><br>"
+  @main += "Brightness: <div id='exp'><br>";
+  @main += "<div id='info'></div><br>"
 
   erb :index
 end
