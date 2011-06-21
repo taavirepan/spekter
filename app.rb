@@ -1,11 +1,17 @@
 require 'rubygems'
-#require 'mongo'
-#require 'bson'
+require 'mongo'
+require 'bson'
 require 'sinatra'
 require 'erb'
 require 'net/http'
 require 'nokogiri'
 require 'json'
+require 'uri'
+
+uri = URI.parse(ENV['MONGOHQ_URL'])
+conn = Mongo::Connection.from_uri(ENV['MONGOHQ_URL'])
+db = conn.db(uri.path.gsub(/^\//, ''))
+$data = db.collection("data")
 
 get '/' do
   @header = "Search"
@@ -19,6 +25,10 @@ get '/' do
 end
 
 def get_spectrum(q)
+  $data.find({:query => q}, {:limit => 1}).each do |res|
+    return res["result"]
+  end
+
   post_data = {:spectra => q, :low_wl => 380, :upp_wl => 780, :unit => 1,
                :show_av => 4, :allowed_out => 1, :forbid_out => 1,
                :intens_out => 1, :show_obs_wl => 1}
@@ -36,6 +46,7 @@ def get_spectrum(q)
     ret << {:wavelength => arr[0].inner_text.to_f, :intensity => arr[2].inner_text.to_f}
   end
   
+  $data.insert({:query => q, :result => ret})
   ret
 end
 
