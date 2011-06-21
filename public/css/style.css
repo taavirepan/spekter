@@ -87,17 +87,18 @@ a:hover { color: #036; }
 */
 
 
+#container
+{
+  margin-left: 10%;
+  margin-right: 10%;
+}
 
-
-
-
-
-
-
-
-
-
-
+header
+{
+  margin-left: 10%;
+  padding-bottom: 5%;
+  font-size: 20px;
+}
 
 
 .ir { display: block; text-indent: -999em; overflow: hidden; background-repeat: no-repeat; text-align: left; direction: ltr; }
